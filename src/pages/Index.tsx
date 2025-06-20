@@ -63,15 +63,15 @@ const Index = () => {
   };
 
   const moodThemes: { [key: string]: string } = {
-    happy: 'from-yellow-100 via-orange-50 to-yellow-100',
-    stressed: 'from-red-100 via-pink-50 to-red-100',
-    tired: 'from-blue-100 via-indigo-50 to-blue-100',
-    bored: 'from-purple-100 via-violet-50 to-purple-100',
-    sad: 'from-gray-100 via-slate-50 to-gray-100',
-    excited: 'from-orange-100 via-yellow-50 to-pink-100'
+    happy: 'from-yellow-400 via-amber-300 to-orange-400',
+    stressed: 'from-red-500 via-rose-400 to-pink-500',
+    tired: 'from-blue-600 via-indigo-500 to-purple-600',
+    bored: 'from-purple-600 via-violet-500 to-indigo-600',
+    sad: 'from-gray-500 via-slate-400 to-blue-400',
+    excited: 'from-orange-500 via-yellow-400 to-pink-500'
   };
 
-  const currentTheme = selectedMood ? moodThemes[selectedMood] : 'from-orange-50 via-yellow-50 to-pink-50';
+  const currentTheme = selectedMood ? moodThemes[selectedMood] : 'from-orange-200 via-yellow-200 to-pink-200';
 
   return (
     <div className={`min-h-screen bg-gradient-to-br ${currentTheme} transition-all duration-1000`}>
