@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import MoodSelector from '@/components/MoodSelector';
 import RecipeCard from '@/components/RecipeCard';
 import FavoritesList from '@/components/FavoritesList';
+import DietaryPreferences from '@/components/DietaryPreferences';
 import { getRecipesByMood } from '@/data/recipes';
+import { filterRecipesByDietaryPreferences, getFilteredRecipeCount } from '@/utils/dietaryFilter';
 import { Button } from '@/components/ui/button';
 import { ChefHat, Heart, Shuffle, Star } from 'lucide-react';
 
@@ -12,6 +14,30 @@ const Index = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [animatingEmoji, setAnimatingEmoji] = useState<string | null>(null);
+  const [allergies, setAllergies] = useState<string[]>([]);
+  const [dislikes, setDislikes] = useState<string[]>([]);
+
+  // Load preferences from localStorage on mount
+  useEffect(() => {
+    const savedAllergies = localStorage.getItem('dietaryAllergies');
+    const savedDislikes = localStorage.getItem('dietaryDislikes');
+    
+    if (savedAllergies) {
+      setAllergies(JSON.parse(savedAllergies));
+    }
+    if (savedDislikes) {
+      setDislikes(JSON.parse(savedDislikes));
+    }
+  }, []);
+
+  // Save preferences to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('dietaryAllergies', JSON.stringify(allergies));
+  }, [allergies]);
+
+  useEffect(() => {
+    localStorage.setItem('dietaryDislikes', JSON.stringify(dislikes));
+  }, [dislikes]);
 
   const handleMoodSelect = (moodId: string) => {
     setSelectedMood(moodId);
@@ -51,7 +77,10 @@ const Index = () => {
     setShowRecipes(false);
   };
 
-  const selectedRecipes = selectedMood ? getRecipesByMood(selectedMood) : [];
+  const allRecipes = selectedMood ? getRecipesByMood(selectedMood) : [];
+  const filteredRecipes = filterRecipesByDietaryPreferences(allRecipes, allergies, dislikes);
+  const filterMessage = getFilteredRecipeCount(allRecipes.length, filteredRecipes.length, allergies, dislikes);
+
   const moodEmojis: { [key: string]: string } = {
     happy: '😊',
     stressed: '😰',
@@ -97,6 +126,12 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <DietaryPreferences
+                allergies={allergies}
+                dislikes={dislikes}
+                onUpdateAllergies={setAllergies}
+                onUpdateDislikes={setDislikes}
+              />
               <Button 
                 variant="outline" 
                 onClick={showFavoritesList}
@@ -163,12 +198,17 @@ const Index = () => {
               <p className="text-gray-600 text-lg font-playful">
                 We've curated these recipes to match your current mood perfectly
               </p>
+              {filterMessage && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-blue-800 font-playful text-sm">ℹ️ {filterMessage}</p>
+                </div>
+              )}
             </div>
 
             {/* Recipes Grid */}
             {showRecipes && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-                {selectedRecipes.map((recipe) => (
+                {filteredRecipes.map((recipe) => (
                   <RecipeCard 
                     key={recipe.id} 
                     recipe={recipe} 
@@ -179,14 +219,20 @@ const Index = () => {
               </div>
             )}
 
-            {selectedRecipes.length === 0 && showRecipes && (
+            {filteredRecipes.length === 0 && showRecipes && (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🔍</div>
                 <h3 className="text-xl font-semibold text-gray-700 mb-2 font-playful">
-                  No recipes found for this mood
+                  {allRecipes.length === 0 
+                    ? "No recipes found for this mood"
+                    : "No recipes match your dietary preferences"
+                  }
                 </h3>
                 <p className="text-gray-600 font-playful">
-                  We're working on adding more recipes. Try selecting a different mood!
+                  {allRecipes.length === 0 
+                    ? "We're working on adding more recipes. Try selecting a different mood!"
+                    : "Try adjusting your dietary preferences or selecting a different mood!"
+                  }
                 </p>
               </div>
             )}
