@@ -64,8 +64,8 @@ const MoodSelector: React.FC<MoodSelectorProps> = ({ selectedMood, onMoodSelect 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">How are you feeling today?</h2>
-        <p className="text-gray-600 text-lg">Choose your mood and we'll suggest the perfect meal for you!</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-2 font-fun">How are you feeling today?</h2>
+        <p className="text-gray-600 text-lg font-playful">Choose your mood and we'll suggest the perfect meal for you!</p>
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -81,8 +81,8 @@ const MoodSelector: React.FC<MoodSelectorProps> = ({ selectedMood, onMoodSelect 
           >
             <CardContent className="p-6 text-center">
               <div className="text-4xl mb-3">{mood.emoji}</div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-1">{mood.name}</h3>
-              <p className="text-sm text-gray-600">{mood.description}</p>
+              <h3 className="font-semibold text-lg text-gray-800 mb-1 font-fun">{mood.name}</h3>
+              <p className="text-sm text-gray-600 font-playful">{mood.description}</p>
             </CardContent>
           </Card>
         ))}

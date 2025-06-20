@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MoodSelector from '@/components/MoodSelector';
 import RecipeCard from '@/components/RecipeCard';
@@ -91,17 +90,17 @@ const Index = () => {
                 <ChefHat className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-cursive">
                   MoodMeal
                 </h1>
-                <p className="text-sm text-gray-600">Food that matches your feeling</p>
+                <p className="text-sm text-gray-600 font-playful">Food that matches your feeling</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
                 onClick={showFavoritesList}
-                className="hover:bg-orange-50"
+                className="hover:bg-orange-50 font-playful"
               >
                 <Star className="w-4 h-4 mr-2" />
                 Favorites ({favorites.length})
@@ -110,7 +109,7 @@ const Index = () => {
                 <Button 
                   variant="outline" 
                   onClick={resetMood}
-                  className="hover:bg-orange-50"
+                  className="hover:bg-orange-50 font-playful"
                 >
                   Change Mood
                 </Button>
@@ -124,11 +123,11 @@ const Index = () => {
         {!selectedMood && !showFavorites ? (
           <div className="animate-fade-in">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 font-fun">
                 Welcome to MoodMeal! 
                 <span className="inline-block ml-2 animate-bounce">🍽️</span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6 font-playful">
                 Discover recipes that perfectly match your current mood. 
                 From comfort food to energizing meals, we've got you covered!
               </p>
@@ -136,7 +135,7 @@ const Index = () => {
                 onClick={handleRandomMood}
                 variant="outline"
                 size="lg"
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:from-purple-600 hover:to-pink-600 mb-8"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:from-purple-600 hover:to-pink-600 mb-8 font-playful"
               >
                 <Shuffle className="w-5 h-5 mr-2" />
                 Surprise Me! Random Recipe
@@ -155,13 +154,13 @@ const Index = () => {
             {/* Mood Display */}
             <div className="text-center py-8">
               <div className="text-6xl mb-4">{moodEmojis[selectedMood!]}</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              <h2 className="text-3xl font-bold text-gray-800 mb-2 font-fun">
                 Perfect recipes for when you're feeling{' '}
-                <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent font-cursive">
                   {selectedMood}
                 </span>
               </h2>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-lg font-playful">
                 We've curated these recipes to match your current mood perfectly
               </p>
             </div>
@@ -183,10 +182,10 @@ const Index = () => {
             {selectedRecipes.length === 0 && showRecipes && (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                <h3 className="text-xl font-semibold text-gray-700 mb-2 font-playful">
                   No recipes found for this mood
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 font-playful">
                   We're working on adding more recipes. Try selecting a different mood!
                 </p>
               </div>
@@ -196,7 +195,7 @@ const Index = () => {
 
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
-          <div className="flex items-center justify-center gap-2 text-gray-600">
+          <div className="flex items-center justify-center gap-2 text-gray-600 font-playful">
             <span>Made with</span>
             <Heart className="w-4 h-4 text-red-500 fill-current" />
             <span>for food lovers everywhere</span>

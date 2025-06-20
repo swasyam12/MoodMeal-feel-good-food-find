@@ -20,17 +20,17 @@ const FavoritesList: React.FC<FavoritesListProps> = ({ favorites, onToggleFavori
         <Button 
           variant="outline" 
           onClick={onBack}
-          className="hover:bg-orange-50"
+          className="hover:bg-orange-50 font-playful"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
         <div>
-          <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+          <h2 className="text-3xl font-bold text-gray-800 flex items-center gap-2 font-cursive">
             <Star className="w-8 h-8 text-yellow-500 fill-current" />
             Your Favorite Recipes
           </h2>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 mt-1 font-playful">
             {favorites.length} recipe{favorites.length !== 1 ? 's' : ''} saved
           </p>
         </div>
@@ -50,13 +50,13 @@ const FavoritesList: React.FC<FavoritesListProps> = ({ favorites, onToggleFavori
       ) : (
         <div className="text-center py-12">
           <div className="text-4xl mb-4">⭐</div>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">
+          <h3 className="text-xl font-semibold text-gray-700 mb-2 font-fun">
             No favorites yet
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-6 font-playful">
             Start exploring recipes and save your favorites by clicking the heart icon!
           </p>
-          <Button onClick={onBack} className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600">
+          <Button onClick={onBack} className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 font-playful">
             Discover Recipes
           </Button>
         </div>

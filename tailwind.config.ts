@@ -19,6 +19,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playful': ['Comic Neue', 'Fredoka One', 'cursive'],
+				'cursive': ['Dancing Script', 'Pacifico', 'cursive'],
+				'fun': ['Fredoka One', 'Bungee', 'cursive'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
