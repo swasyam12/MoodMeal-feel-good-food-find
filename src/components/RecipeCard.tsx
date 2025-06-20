@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, Users, ChefHat, ExternalLink, Eye } from 'lucide-react';
+import { Clock, Users, ChefHat, ExternalLink, Eye, Heart } from 'lucide-react';
 import RecipeModal from './RecipeModal';
 
 interface Recipe {
@@ -24,9 +24,11 @@ interface Recipe {
 
 interface RecipeCardProps {
   recipe: Recipe;
+  isFavorite?: boolean;
+  onToggleFavorite?: (recipeId: string) => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFavorite = false, onToggleFavorite }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getDifficultyColor = (difficulty: string) => {
@@ -38,9 +40,28 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     }
   };
 
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleFavorite?.(recipe.id);
+  };
+
   return (
     <>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 group relative">
+        {/* Favorite Button */}
+        {onToggleFavorite && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 left-2 z-10 p-1 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90"
+            onClick={handleFavoriteClick}
+          >
+            <Heart 
+              className={`w-4 h-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'} transition-colors`}
+            />
+          </Button>
+        )}
+
         <div className="relative overflow-hidden">
           <img
             src={recipe.image}
