@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
-import MoodSelector from '@/components/MoodSelector';
-import RecipeCard from '@/components/RecipeCard';
+import Header from '@/components/Header';
+import WelcomeSection from '@/components/WelcomeSection';
+import MoodDisplay from '@/components/MoodDisplay';
+import RecipesGrid from '@/components/RecipesGrid';
+import Footer from '@/components/Footer';
 import FavoritesList from '@/components/FavoritesList';
-import DietaryPreferences from '@/components/DietaryPreferences';
 import { getRecipesByMood } from '@/data/recipes';
 import { filterRecipesByDietaryPreferences, getFilteredRecipeCount } from '@/utils/dietaryFilter';
-import { Button } from '@/components/ui/button';
-import { ChefHat, Heart, Shuffle, Star } from 'lucide-react';
 
 const Index = () => {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -110,74 +111,24 @@ const Index = () => {
         </div>
       )}
 
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-r from-orange-400 to-pink-400 p-2 rounded-xl">
-                <ChefHat className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent font-cursive">
-                  MoodMeal
-                </h1>
-                <p className="text-sm text-gray-600 font-playful">Food that matches your feeling</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <DietaryPreferences
-                allergies={allergies}
-                dislikes={dislikes}
-                onUpdateAllergies={setAllergies}
-                onUpdateDislikes={setDislikes}
-              />
-              <Button 
-                variant="outline" 
-                onClick={showFavoritesList}
-                className="hover:bg-orange-50 font-playful"
-              >
-                <Star className="w-4 h-4 mr-2" />
-                Favorites ({favorites.length})
-              </Button>
-              {selectedMood && (
-                <Button 
-                  variant="outline" 
-                  onClick={resetMood}
-                  className="hover:bg-orange-50 font-playful"
-                >
-                  Change Mood
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header
+        allergies={allergies}
+        dislikes={dislikes}
+        onUpdateAllergies={setAllergies}
+        onUpdateDislikes={setDislikes}
+        favoritesCount={favorites.length}
+        onShowFavorites={showFavoritesList}
+        selectedMood={selectedMood}
+        onResetMood={resetMood}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         {!selectedMood && !showFavorites ? (
-          <div className="animate-fade-in">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 font-fun">
-                Welcome to MoodMeal! 
-                <span className="inline-block ml-2 animate-bounce">🍽️</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6 font-playful">
-                Discover recipes that perfectly match your current mood. 
-                From comfort food to energizing meals, we've got you covered!
-              </p>
-              <Button 
-                onClick={handleRandomMood}
-                variant="outline"
-                size="lg"
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:from-purple-600 hover:to-pink-600 mb-8 font-playful"
-              >
-                <Shuffle className="w-5 h-5 mr-2" />
-                Surprise Me! Random Recipe
-              </Button>
-            </div>
-            <MoodSelector selectedMood={selectedMood} onMoodSelect={handleMoodSelect} />
-          </div>
+          <WelcomeSection
+            selectedMood={selectedMood}
+            onMoodSelect={handleMoodSelect}
+            onRandomMood={handleRandomMood}
+          />
         ) : showFavorites ? (
           <FavoritesList 
             favorites={favorites} 
@@ -186,67 +137,18 @@ const Index = () => {
           />
         ) : (
           <div className="space-y-8">
-            {/* Mood Display */}
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4">{moodEmojis[selectedMood!]}</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2 font-fun">
-                Perfect recipes for when you're feeling{' '}
-                <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent font-cursive">
-                  {selectedMood}
-                </span>
-              </h2>
-              <p className="text-gray-600 text-lg font-playful">
-                We've curated these recipes to match your current mood perfectly
-              </p>
-              {filterMessage && (
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-blue-800 font-playful text-sm">ℹ️ {filterMessage}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Recipes Grid */}
-            {showRecipes && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-                {filteredRecipes.map((recipe) => (
-                  <RecipeCard 
-                    key={recipe.id} 
-                    recipe={recipe} 
-                    isFavorite={favorites.includes(recipe.id)}
-                    onToggleFavorite={toggleFavorite}
-                  />
-                ))}
-              </div>
-            )}
-
-            {filteredRecipes.length === 0 && showRecipes && (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2 font-playful">
-                  {allRecipes.length === 0 
-                    ? "No recipes found for this mood"
-                    : "No recipes match your dietary preferences"
-                  }
-                </h3>
-                <p className="text-gray-600 font-playful">
-                  {allRecipes.length === 0 
-                    ? "We're working on adding more recipes. Try selecting a different mood!"
-                    : "Try adjusting your dietary preferences or selecting a different mood!"
-                  }
-                </p>
-              </div>
-            )}
+            <MoodDisplay selectedMood={selectedMood!} filterMessage={filterMessage} />
+            <RecipesGrid
+              recipes={filteredRecipes}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              showRecipes={showRecipes}
+              allRecipesLength={allRecipes.length}
+            />
           </div>
         )}
 
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
-          <div className="flex items-center justify-center gap-2 text-gray-600 font-playful">
-            <span>Made with</span>
-            <Heart className="w-4 h-4 text-red-500 fill-current" />
-            <span>for food lovers everywhere</span>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
